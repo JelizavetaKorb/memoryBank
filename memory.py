@@ -1,63 +1,73 @@
-# memory.py — Main script for Memory Bank
-# Reads input.txt, sends it to an LLM, and appends a summary to MEMORY.md
+"""
+memory.py — Memory Bank
 
-import os
+Reads a pasted AI conversation from input.txt, extracts structured project
+context via Ollama (local), and appends it to MEMORY.md so your AI assistant
+can pick up where it left off next session.
+"""
+
+import sys
 from datetime import datetime
 from pathlib import Path
 
-from dotenv import load_dotenv
-from openai import OpenAI
-
-load_dotenv()
+import ollama
 
 SCRIPT_DIR = Path(__file__).parent
 INPUT_FILE = SCRIPT_DIR / "input.txt"
 MEMORY_FILE = SCRIPT_DIR / "MEMORY.md"
 
 SYSTEM_PROMPT = (
-    "You are a memory-bank assistant. The user will paste a developer conversation. "
-    "Extract the key decisions, facts, code snippets, and action items. "
-    "Return a concise Markdown summary suitable for appending to a long-running MEMORY.md file."
+    "You are a developer memory assistant. From this AI conversation, extract "
+    "and structure the following: "
+    "1) Architecture decisions made, "
+    "2) Technologies chosen and why, "
+    "3) Things tried and rejected and why, "
+    "4) Naming conventions established, "
+    "5) Open questions remaining. "
+    "Format everything as clean markdown with clear section headers. "
+    "Be concise and factual."
 )
 
 
 def read_input() -> str:
     if not INPUT_FILE.exists():
-        raise FileNotFoundError(f"{INPUT_FILE} not found. Paste your conversation there first.")
+        print("❌ input.txt not found. Create it and paste your conversation there.")
+        sys.exit(1)
     text = INPUT_FILE.read_text().strip()
     if not text:
-        raise ValueError("input.txt is empty. Paste a conversation and try again.")
+        print("⚠️  input.txt is empty. Paste an AI conversation and try again.")
+        sys.exit(1)
     return text
 
 
 def summarize(conversation: str) -> str:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise EnvironmentError("OPENAI_API_KEY is not set. Add it to .env")
-
-    client = OpenAI(api_key=api_key)
-    response = client.chat.completions.create(
-        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+    response = ollama.chat(
+        model="llama3.2",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": conversation},
         ],
-        temperature=0.3,
+        options={"temperature": 0.3},
     )
-    return response.choices[0].message.content
+    return response["message"]["content"]
 
 
 def append_to_memory(summary: str) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-    entry = f"\n---\n\n## {timestamp}\n\n{summary}\n"
+    entry = f"\n---\n\n## Session — {timestamp}\n\n{summary}\n"
+
+    if not MEMORY_FILE.exists():
+        MEMORY_FILE.write_text("# Memory Bank\n\n> Project context extracted from AI conversations.\n")
+
     with open(MEMORY_FILE, "a") as f:
         f.write(entry)
-    print(f"✅ Memory updated — see {MEMORY_FILE}")
+
+    print(f"✅ Memory updated — see MEMORY.md")
 
 
 def main() -> None:
     conversation = read_input()
-    print("🧠 Summarising conversation …")
+    print("🧠 Extracting project context …")
     summary = summarize(conversation)
     append_to_memory(summary)
 

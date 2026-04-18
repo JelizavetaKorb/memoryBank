@@ -1,43 +1,42 @@
 # Memory Bank
 
-A simple tool that summarises developer conversations and appends them to a persistent `MEMORY.md` file using an LLM.
+AI assistants like Copilot have no memory between sessions — you end up re-explaining your project every time. **Memory Bank** fixes that.
 
-## Setup
+Paste an AI conversation into `input.txt`, run `python memory.py`, and the tool extracts structured project context (architecture decisions, tech choices, rejected approaches, naming conventions, open questions) and appends it to `MEMORY.md`. Next session, feed that file back to your AI assistant and it already knows your project.
 
-1. **Install dependencies**
+## Quick Start
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+# 1. Install Ollama (https://ollama.com) and pull the model
+ollama pull llama3.2
 
-2. **Add your API key**
+# 2. Clone the repo
+git clone https://github.com/<your-username>/memory-bank.git
+cd memory-bank
 
-   Copy the example env file and fill in your key:
+# 3. Install dependencies
+pip install -r requirements.txt
 
-   ```bash
-   cp .env.example .env
-   ```
+# 4. Paste a conversation into input.txt, then run:
+python memory.py
+```
 
-   Then edit `.env` and replace `your-api-key-here` with your actual OpenAI API key.
+That's it — no API keys needed. Check `MEMORY.md` for the extracted context.
 
-## Usage
+## How It Works
 
-1. Paste a conversation into `input.txt`.
-2. Run the script:
-
-   ```bash
-   python memory.py
-   ```
-
-3. A summary is appended to `MEMORY.md`.
+1. You paste an AI conversation into `input.txt`
+2. `memory.py` sends it to `llama3.2` running locally via Ollama
+3. The LLM extracts: architecture decisions, tech choices, rejected approaches, naming conventions, and open questions
+4. The structured output is appended to `MEMORY.md` with a timestamp
+5. Next session, share `MEMORY.md` with your AI assistant for instant project context
 
 ## File Overview
 
-| File               | Purpose                                      |
-| ------------------ | -------------------------------------------- |
-| `memory.py`        | Main script — reads, summarises, and appends |
-| `input.txt`        | Paste your conversation here                 |
-| `MEMORY.md`        | Auto-generated memory file (grows over time) |
-| `.env`             | Your API key (not committed)                 |
-| `.env.example`     | Template so others know what to add          |
-| `requirements.txt` | Python dependencies                          |
+| File               | Purpose                                        |
+| ------------------ | ---------------------------------------------- |
+| `memory.py`        | Main script — reads, extracts, and appends     |
+| `input.txt`        | Paste your AI conversation here                |
+| `MEMORY.md`        | Auto-generated memory file (grows over time)   |
+| `requirements.txt` | Python dependencies                            |
+| `.gitignore`       | Keeps junk out of version control              |

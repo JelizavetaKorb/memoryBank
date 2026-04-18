@@ -1,0 +1,10 @@
+Me: okay so we decided on Firebase, now how should I structure the database?
+AI: For your DashboardView data, I'd create three collections: users, sessions, and events.
+Me: what about a single collection with nested data?
+AI: We tried that approach with a similar project and it gets messy fast when you need to query across users. Separate collections is cleaner.
+Me: should I use Firebase Functions for the backend logic?
+AI: Yes, it fits well with your Firebase setup. Avoid Express for now — unnecessary complexity.
+Me: what should I call the main data fetching hook?
+AI: useDashboardData — keeps it consistent with DashboardView naming you already have.
+Me: are we handling offline mode?
+AI: Leave that for v2 — focus on getting the happy path working first.

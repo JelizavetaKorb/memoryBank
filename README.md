@@ -1,42 +1,46 @@
 # Memory Bank
 
-AI assistants like Copilot have no memory between sessions — you end up re-explaining your project every time. **Memory Bank** fixes that.
+Give your AI assistant a long-term memory. Paste a conversation, run one command, and your project context is saved forever.
 
-Paste an AI conversation into `input.txt`, run `python memory.py`, and the tool extracts structured project context (architecture decisions, tech choices, rejected approaches, naming conventions, open questions) and appends it to `MEMORY.md`. Next session, feed that file back to your AI assistant and it already knows your project.
+## The Problem
 
-## Quick Start
-
-```bash
-# 1. Install Ollama (https://ollama.com) and pull the model
-ollama pull llama3.2
-
-# 2. Clone the repo
-git clone https://github.com/<your-username>/memory-bank.git
-cd memory-bank
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Paste a conversation into input.txt, then run:
-python memory.py
-```
-
-That's it — no API keys needed. Check `MEMORY.md` for the extracted context.
+AI assistants have no memory between sessions. Every new chat starts from zero. You waste time re-explaining your architecture, your tech stack, and the decisions you already made.
 
 ## How It Works
 
-1. You paste an AI conversation into `input.txt`
-2. `memory.py` sends it to `llama3.2` running locally via Ollama
-3. The LLM extracts: architecture decisions, tech choices, rejected approaches, naming conventions, and open questions
-4. The structured output is appended to `MEMORY.md` with a timestamp
-5. Next session, share `MEMORY.md` with your AI assistant for instant project context
+1. Paste your AI conversation into `input.txt`
+2. Run `python memory.py`
+3. Your `MEMORY.md` updates automatically
 
-## File Overview
+## Quick Start
 
-| File               | Purpose                                        |
-| ------------------ | ---------------------------------------------- |
-| `memory.py`        | Main script — reads, extracts, and appends     |
-| `input.txt`        | Paste your AI conversation here                |
-| `MEMORY.md`        | Auto-generated memory file (grows over time)   |
-| `requirements.txt` | Python dependencies                            |
-| `.gitignore`       | Keeps junk out of version control              |
+### Minimal Setup (one file)
+
+1. Download `memory.py` and drop it into your project folder
+2. Install [Ollama](https://ollama.com)
+3. Run `ollama pull llama3.2`
+4. Paste your AI conversation into `input.txt`
+5. Run `python memory.py`
+6. Before each next prompt write "Read MEMORY.md for context..." 
+
+That's it. No config, no accounts, no API keys.
+
+
+## Requirements
+
+- Python 3.8+
+- [Ollama](https://ollama.com) installed locally
+
+## What Gets Extracted
+
+- Architecture decisions
+- Technologies chosen and why
+- Things tried and rejected
+- Naming conventions
+- Open questions
+
+## Roadmap
+
+- **v1** Python script (acomplished)
+- **v2** `pip` package — one-line install anywhere
+- **v3** VS Code extension — right-click any conversation to save

@@ -1,10 +1,18 @@
-Me: okay so we decided on Firebase, now how should I structure the database?
-AI: For your DashboardView data, I'd create three collections: users, sessions, and events.
-Me: what about a single collection with nested data?
-AI: We tried that approach with a similar project and it gets messy fast when you need to query across users. Separate collections is cleaner.
-Me: should I use Firebase Functions for the backend logic?
-AI: Yes, it fits well with your Firebase setup. Avoid Express for now — unnecessary complexity.
-Me: what should I call the main data fetching hook?
-AI: useDashboardData — keeps it consistent with DashboardView naming you already have.
-Me: are we handling offline mode?
-AI: Leave that for v2 — focus on getting the happy path working first.
+Big changes today. PostgreSQL is out, switching to MongoDB — 
+the data model is way more flexible than we originally thought 
+and documents fit better than relational tables for our use case.
+
+Auth decision made — dropping the idea of handling JWT ourselves, 
+too much maintenance overhead. Going with Auth0, it handles 
+everything out of the box.
+
+State management settled — Zustand wins over Redux. 
+Redux is serious overkill for our scale.
+
+Real-time updates are confirmed as a requirement. Using Socket.io.
+
+Also renaming the data fetching hook from useTaskData to useTasks. 
+Cleaner and shorter.
+
+One new open question — do we need a caching layer? 
+Redis was mentioned but no decision yet.

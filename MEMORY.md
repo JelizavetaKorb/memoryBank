@@ -4,63 +4,39 @@
 
 ---
 
-## Session — 2026-04-18 17:37
+## Session — 2026-04-18 18:36
 
-**Project Architecture**
-========================
+## Architecture Decisions
+### Made
+#### Frontend Framework: React
+#### Styling Library: Tailwind CSS
+#### Backend Framework: Node.js with Express
+#### Database: MongoDB
 
-### **Architecture Decisions Made**
+## Technologies Chosen and Why
+### Frontend
+*   React: Familiarity and ecosystem strength make it an ideal choice for the team.
+*   Tailwind CSS: Quick development speed and ease of use ensure a smooth user experience.
+### Backend
+*   Node.js with Express: Simple, straightforward approach to meet project needs.
+*   Auth0: Provides an out-of-the-box solution for authentication, reducing maintenance overhead.
+*   Zustand: Suitable for the project's scale, offering a more lightweight alternative to Redux.
+### Database
+*   MongoDB: Flexible data model and document-based structure make it a better fit for the project's requirements.
+*   Socket.io: Confirmed as necessary for real-time updates.
 
-* Real-time updates are prioritized, leading to the selection of Firebase as the database solution.
-* PostgreSQL is considered overkill due to the need for server management.
+## Things Tried and Rejected
+#### Tried
+*   Redux vs. Zustand
+*   Real-time Updates (polling considered)
+*   Handling JWT manually
+*   Using Redis as a caching layer
+#### Rejected
+*   PostgreSQL
 
-### **Technologies Chosen and Why**
+## Naming Conventions Established
+#### Renamed useTaskData to useTasks
 
-| Technology | Reason |
-| --- | --- |
-| Firebase | Real-time updates, simplicity, and ease of use. |
-| TypeScript | Already set up and will save debugging time in the future. |
-
-### **Things Tried and Rejected and Why**
-
-* PostgreSQL was considered but rejected due to the need for server management.
-* Self-built authentication is left open for now, prioritizing core feature development.
-
-### **Naming Conventions Established**
-
-* The main component has been named `DashboardView` to maintain consistency with existing naming conventions.
-
-### **Open Questions Remaining**
-
-* Authentication implementation: Should self-built authentication be pursued or leave it for later?
-
----
-
-## Session — 2026-04-18 17:40
-
-**Project Planning**
-=====================
-
-### Architecture Decisions Made
-
-* Real-time updates: Firebase is chosen to handle this requirement efficiently.
-* Server management: PostgreSQL was considered but ultimately rejected due to the need for server management, which adds unnecessary complexity.
-
-### Technologies Chosen and Why
-
-* **Firebase**: Suitable for real-time updates and simple queries. Reduces the need for server management and provides a scalable solution.
-* **TypeScript**: Already set up in the project, using it will save debugging time later on.
-
-### Things Tried and Rejected
-
-* **PostgreSQL**: Overkill for this project due to the need for server management. Firebase is chosen instead for its scalability and ease of use.
-* **Self-built authentication**: Left open for now, focusing on the core feature first. Authentication can be implemented later when needed.
-
-### Naming Conventions Established
-
-* **DashboardView**: Main component name, consistent with existing naming conventions in the project.
-
-### Open Questions Remaining
-
-* **Authentication implementation**: Should implement authentication system once the core feature is complete.
-* **Additional features and scalability**: Will consider adding more features or scaling Firebase as the project grows.
+## Open Questions Remaining
+#### Whether or not a caching layer is necessary
+#### Currently undecided, with Redis being mentioned as an option
